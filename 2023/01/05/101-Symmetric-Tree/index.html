@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Binary Tree,DFS," />
 
 
 
@@ -79,12 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Haozhe Sun&#39;s site">
-<meta property="og:url" content="https://haozhesun.github.io/archives/index.html">
+<meta name="description" content="Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center). Use DFS to traverse left and right subtrees, where left tree traverse left node first and r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="101. Symmetric Tree">
+<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/101-Symmetric-Tree/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
+<meta property="og:description" content="Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center). Use DFS to traverse left and right subtrees, where left tree traverse left node first and r">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-01-05T19:10:28.000Z">
+<meta property="article:modified_time" content="2023-01-05T19:35:37.978Z">
 <meta property="article:author" content="Haozhe Sun">
+<meta property="article:tag" content="Binary Tree">
+<meta property="article:tag" content="DFS">
 <meta name="twitter:card" content="summary">
 
 
@@ -115,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/archives/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/101-Symmetric-Tree/"/>
 
 
 
 
 
-  <title>Archive | Haozhe Sun's site</title>
+  <title>101. Symmetric Tree | Haozhe Sun's site</title>
   
 
 
@@ -140,7 +146,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -244,74 +250,156 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        Um..! 1 post. Keep on posting.
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2023">2023</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/101-Symmetric-Tree/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haozhe Sun's site">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2023/01/05/101-Symmetric-Tree/" itemprop="url">
-              
-                <span itemprop="name">101. Symmetric Tree</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">101. Symmetric Tree</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2023-01-05T14:10:28-05:00"
-              content="2023-01-05" >
-          01-05
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T14:10:28-05:00">
+                2023-01-05
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
+                    <span itemprop="name">Leetcode</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).</p>
+<p>Use DFS to traverse left and right subtrees, where left tree traverse left node first and right tree traverse right node first, and compare values between left and right subtree.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isSymmetric</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        left=root.left</span><br><span class="line">        right=root.right</span><br><span class="line">        stackLeft=[]</span><br><span class="line">        stackRight=[]</span><br><span class="line">        <span class="keyword">while</span> left <span class="keyword">or</span> right <span class="keyword">or</span> stackLeft <span class="keyword">or</span> stackRight:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> left <span class="keyword">and</span> <span class="keyword">not</span> right:</span><br><span class="line">                left=stackLeft.pop()</span><br><span class="line">                right=stackRight.pop()</span><br><span class="line">                left=left.right</span><br><span class="line">                right=right.left</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="keyword">not</span> left <span class="keyword">or</span> <span class="keyword">not</span> right:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            <span class="keyword">if</span> left.val!=right.val:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">            stackLeft.append(left)</span><br><span class="line">            stackRight.append(right)</span><br><span class="line">            left=left.left</span><br><span class="line">            right=right.right</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+          
+            <a href="/tags/DFS/" rel="tag"># DFS</a>
+          
+        </div>
+      
+
+      
+      
+      
 
       
 
-    </div>
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -319,6 +407,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -540,6 +632,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
