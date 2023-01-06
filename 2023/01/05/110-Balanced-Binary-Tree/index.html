@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree,Divide and Conquer,Binary Search Tree," />
+  <meta name="keywords" content="Binary Tree," />
 
 
 
@@ -79,19 +79,17 @@
 
 
 
-<meta name="description" content="Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree. For a height balanced binary search tree, the root is the middle numbe">
+<meta name="description" content="Given a binary tree, determine if it is height-balanced. Use recursion to find tree height, for each node, by adding 1 to the max depth of it’s subtrees.Compare height of each node to see if differenc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="108. Convert Sorted Array to Binary Search Tree">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/108-Convert-Sorted-Array-to-Binary-Search-Tree/index.html">
+<meta property="og:title" content="110. Balanced Binary Tree">
+<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/110-Balanced-Binary-Tree/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree. For a height balanced binary search tree, the root is the middle numbe">
+<meta property="og:description" content="Given a binary tree, determine if it is height-balanced. Use recursion to find tree height, for each node, by adding 1 to the max depth of it’s subtrees.Compare height of each node to see if differenc">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-05T23:41:04.000Z">
-<meta property="article:modified_time" content="2023-01-05T23:44:34.452Z">
+<meta property="article:published_time" content="2023-01-06T00:11:49.000Z">
+<meta property="article:modified_time" content="2023-01-06T00:14:59.276Z">
 <meta property="article:author" content="Haozhe Sun">
 <meta property="article:tag" content="Binary Tree">
-<meta property="article:tag" content="Divide and Conquer">
-<meta property="article:tag" content="Binary Search Tree">
 <meta name="twitter:card" content="summary">
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/108-Convert-Sorted-Array-to-Binary-Search-Tree/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/110-Balanced-Binary-Tree/"/>
 
 
 
 
 
-  <title>108. Convert Sorted Array to Binary Search Tree | Haozhe Sun's site</title>
+  <title>110. Balanced Binary Tree | Haozhe Sun's site</title>
   
 
 
@@ -265,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/108-Convert-Sorted-Array-to-Binary-Search-Tree/">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/110-Balanced-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -282,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">108. Convert Sorted Array to Binary Search Tree</h1>
+          <h1 class="post-title" itemprop="name headline">110. Balanced Binary Tree</h1>
         
 
         <div class="post-meta">
@@ -294,7 +292,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T18:41:04-05:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T19:11:49-05:00">
                 2023-01-05
               </time>
             
@@ -354,9 +352,10 @@
       
 
       
-        <p>Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.</p>
-<p>For a height balanced binary search tree, the root is the middle number of values of it’s subtrees, so we choose the value in the middle of nums to be the root, and compute left and right subtree from left and right half of nums.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">levelOrderBottom</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="type">List</span>[<span class="type">List</span>[<span class="built_in">int</span>]]:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> []</span><br><span class="line">        ans=collections.deque([[]])</span><br><span class="line">        stack=collections.deque([root,<span class="literal">None</span>])</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            cur=stack.popleft()</span><br><span class="line">            <span class="keyword">if</span> cur:</span><br><span class="line">                ans[<span class="number">0</span>].append(cur.val)</span><br><span class="line">                <span class="keyword">if</span> cur.left: stack.append(cur.left)</span><br><span class="line">                <span class="keyword">if</span> cur.right: stack.append(cur.right)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> stack:</span><br><span class="line">                    stack.append(<span class="literal">None</span>)</span><br><span class="line">                    ans.appendleft([])</span><br><span class="line">                    </span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
+        <p>Given a binary tree, determine if it is height-balanced.</p>
+<p>Use recursion to find tree height, for each node, by adding 1 to the max depth of it’s subtrees.<br>Compare height of each node to see if difference is greater than 1.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">height</span>(<span class="params">self,root</span>):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>+<span class="built_in">max</span>(self.height(root.left),self.height(root.right))</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">isBalanced</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">abs</span>(self.height(root.left) - self.height(root.right)) &lt; <span class="number">2</span> <span class="keyword">and</span> self.isBalanced(root.left) <span class="keyword">and</span> self.isBalanced(root.right)</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -375,10 +374,6 @@
           
             <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
           
-            <a href="/tags/Divide-and-Conquer/" rel="tag"># Divide and Conquer</a>
-          
-            <a href="/tags/Binary-Search-Tree/" rel="tag"># Binary Search Tree</a>
-          
         </div>
       
 
@@ -390,8 +385,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/01/05/107-Binary-Tree-Level-Order-Traversal-II/" rel="next" title="107. Binary Tree Level Order Traversal II">
-                <i class="fa fa-chevron-left"></i> 107. Binary Tree Level Order Traversal II
+              <a href="/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/" rel="next" title="109. Convert Sorted List to Binary Search Tree">
+                <i class="fa fa-chevron-left"></i> 109. Convert Sorted List to Binary Search Tree
               </a>
             
           </div>
@@ -399,10 +394,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/" rel="prev" title="109. Convert Sorted List to Binary Search Tree">
-                109. Convert Sorted List to Binary Search Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
