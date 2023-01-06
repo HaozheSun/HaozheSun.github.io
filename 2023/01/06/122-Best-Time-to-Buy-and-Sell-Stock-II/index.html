@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree,Divide and Conquer,Binary Search Tree," />
+  <meta name="keywords" content="Greedy," />
 
 
 
@@ -79,19 +79,17 @@
 
 
 
-<meta name="description" content="Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree. Convert linked list to array and use code from 108 123456789101">
+<meta name="description" content="You are given an integer array prices where prices[i] is the price of a given stock on the ith day. On each day, you may decide to buy and&#x2F;or sell the stock. You can only hold at most one share o">
 <meta property="og:type" content="article">
-<meta property="og:title" content="109. Convert Sorted List to Binary Search Tree">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/index.html">
+<meta property="og:title" content="122. Best Time to Buy and Sell Stock II">
+<meta property="og:url" content="https://haozhesun.github.io/2023/01/06/122-Best-Time-to-Buy-and-Sell-Stock-II/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree. Convert linked list to array and use code from 108 123456789101">
+<meta property="og:description" content="You are given an integer array prices where prices[i] is the price of a given stock on the ith day. On each day, you may decide to buy and&#x2F;or sell the stock. You can only hold at most one share o">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-05T23:53:27.000Z">
-<meta property="article:modified_time" content="2023-01-05T23:54:21.073Z">
+<meta property="article:published_time" content="2023-01-06T12:53:07.000Z">
+<meta property="article:modified_time" content="2023-01-06T12:54:48.015Z">
 <meta property="article:author" content="Haozhe Sun">
-<meta property="article:tag" content="Binary Tree">
-<meta property="article:tag" content="Divide and Conquer">
-<meta property="article:tag" content="Binary Search Tree">
+<meta property="article:tag" content="Greedy">
 <meta name="twitter:card" content="summary">
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/2023/01/06/122-Best-Time-to-Buy-and-Sell-Stock-II/"/>
 
 
 
 
 
-  <title>109. Convert Sorted List to Binary Search Tree | Haozhe Sun's site</title>
+  <title>122. Best Time to Buy and Sell Stock II | Haozhe Sun's site</title>
   
 
 
@@ -265,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/06/122-Best-Time-to-Buy-and-Sell-Stock-II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -282,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">109. Convert Sorted List to Binary Search Tree</h1>
+          <h1 class="post-title" itemprop="name headline">122. Best Time to Buy and Sell Stock II</h1>
         
 
         <div class="post-meta">
@@ -294,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T18:53:27-05:00">
-                2023-01-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-06T07:53:07-05:00">
+                2023-01-06
               </time>
             
 
@@ -354,9 +352,11 @@
       
 
       
-        <p>Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree.</p>
-<p>Convert linked list to array and use code from 108</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sortedListToBST</span>(<span class="params">self, head: <span class="type">Optional</span>[ListNode]</span>) -&gt; <span class="type">Optional</span>[TreeNode]:</span><br><span class="line">        nums=[]</span><br><span class="line">        <span class="keyword">while</span> head:</span><br><span class="line">            nums.append(head.val)</span><br><span class="line">            head=head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">start=<span class="number">0</span>,end=<span class="built_in">len</span>(<span class="params">nums</span>)-<span class="number">1</span></span>):</span><br><span class="line">            <span class="keyword">if</span> start&gt;end:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            mid = start+(end-start)//<span class="number">2</span></span><br><span class="line">            root = TreeNode(nums[mid])</span><br><span class="line">            root.left = helper(start,mid-<span class="number">1</span>)</span><br><span class="line">            root.right = helper(mid+<span class="number">1</span>,end)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> helper()</span><br></pre></td></tr></table></figure>
+        <p>You are given an integer array prices where prices[i] is the price of a given stock on the ith day.</p>
+<p>On each day, you may decide to buy and&#x2F;or sell the stock. You can only hold at most one share of the stock at any time. However, you can buy it then immediately sell it on the same day.</p>
+<p>Find and return the maximum profit you can achieve.</p>
+<p>Traverse prices from left to right, if price[i]&lt; price[i+1], there is a profit, andd price[i+1]-price[i] to the result.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> prices <span class="keyword">or</span> <span class="built_in">len</span>(prices)&lt;<span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        ans=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(prices)-<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> prices[i]&lt;prices[i+<span class="number">1</span>]:</span><br><span class="line">                ans+=prices[i+<span class="number">1</span>]-prices[i]</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -373,11 +373,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
-          
-            <a href="/tags/Divide-and-Conquer/" rel="tag"># Divide and Conquer</a>
-          
-            <a href="/tags/Binary-Search-Tree/" rel="tag"># Binary Search Tree</a>
+            <a href="/tags/Greedy/" rel="tag"># Greedy</a>
           
         </div>
       
@@ -390,8 +386,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/01/05/108-Convert-Sorted-Array-to-Binary-Search-Tree/" rel="next" title="108. Convert Sorted Array to Binary Search Tree">
-                <i class="fa fa-chevron-left"></i> 108. Convert Sorted Array to Binary Search Tree
+              <a href="/2023/01/06/121-Best-Time-to-Buy-and-Sell-Stock/" rel="next" title="121. Best Time to Buy and Sell Stock">
+                <i class="fa fa-chevron-left"></i> 121. Best Time to Buy and Sell Stock
               </a>
             
           </div>
@@ -399,10 +395,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/05/110-Balanced-Binary-Tree/" rel="prev" title="110. Balanced Binary Tree">
-                110. Balanced Binary Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
