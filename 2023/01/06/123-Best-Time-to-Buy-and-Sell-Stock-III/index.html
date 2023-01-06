@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree,BFS," />
+  <meta name="keywords" content="Dynamic Programming," />
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="Given the root of a binary tree, return its maximum depth. A binary tree’s maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node. Use deque to s">
+<meta name="description" content="You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve. You may complete at most two transactions. Note: You may not engage">
 <meta property="og:type" content="article">
-<meta property="og:title" content="104. Maximum Depth of Binary Tree">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/104-Maximum-Depth-of-Binary-Tree/index.html">
+<meta property="og:title" content="123. Best Time to Buy and Sell Stock III">
+<meta property="og:url" content="https://haozhesun.github.io/2023/01/06/123-Best-Time-to-Buy-and-Sell-Stock-III/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="Given the root of a binary tree, return its maximum depth. A binary tree’s maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node. Use deque to s">
+<meta property="og:description" content="You are given an array prices where prices[i] is the price of a given stock on the ith day. Find the maximum profit you can achieve. You may complete at most two transactions. Note: You may not engage">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-05T21:15:00.000Z">
-<meta property="article:modified_time" content="2023-01-05T21:17:09.192Z">
+<meta property="article:published_time" content="2023-01-06T20:50:19.000Z">
+<meta property="article:modified_time" content="2023-01-06T20:56:07.851Z">
 <meta property="article:author" content="Haozhe Sun">
-<meta property="article:tag" content="Binary Tree">
-<meta property="article:tag" content="BFS">
+<meta property="article:tag" content="Dynamic Programming">
 <meta name="twitter:card" content="summary">
 
 
@@ -121,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/104-Maximum-Depth-of-Binary-Tree/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/2023/01/06/123-Best-Time-to-Buy-and-Sell-Stock-III/"/>
 
 
 
 
 
-  <title>104. Maximum Depth of Binary Tree | Haozhe Sun's site</title>
+  <title>123. Best Time to Buy and Sell Stock III | Haozhe Sun's site</title>
   
 
 
@@ -264,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/104-Maximum-Depth-of-Binary-Tree/">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/06/123-Best-Time-to-Buy-and-Sell-Stock-III/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -281,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">104. Maximum Depth of Binary Tree</h1>
+          <h1 class="post-title" itemprop="name headline">123. Best Time to Buy and Sell Stock III</h1>
         
 
         <div class="post-meta">
@@ -293,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T16:15:00-05:00">
-                2023-01-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-06T15:50:19-05:00">
+                2023-01-06
               </time>
             
 
@@ -353,10 +352,13 @@
       
 
       
-        <p>Given the root of a binary tree, return its maximum depth.</p>
-<p>A binary tree’s maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.</p>
-<p>Use deque to store stack, sepereate different level with None in stack. Use BFS, everytime meet a None in stack means the tree is one level deeper, increment len.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxDepth</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        stack=collections.deque([root,<span class="literal">None</span>])</span><br><span class="line">        <span class="built_in">len</span>=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            cur=stack.popleft()</span><br><span class="line">            <span class="keyword">if</span> cur:</span><br><span class="line">                <span class="keyword">if</span> cur.left: stack.append(cur.left)</span><br><span class="line">                <span class="keyword">if</span> cur.right: stack.append(cur.right)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> stack:</span><br><span class="line">                    stack.append(<span class="literal">None</span>)</span><br><span class="line">                <span class="built_in">len</span>+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <p>You are given an array prices where prices[i] is the price of a given stock on the ith day.</p>
+<p>Find the maximum profit you can achieve. You may complete at most two transactions.</p>
+<p>Note: You may not engage in multiple transactions simultaneously (i.e., you must sell the stock before you buy again).</p>
+<p>Use dpl where dpl[i] stores the max profit for prices[0] to price[i]<br>dpl[i] is equal to the maximum between prices[i-1] and price[i] - minleft<br>Use dpr where dpr[i] stores the max profit for prices[i:]<br>dpr[i] is equal to the maximum between prices[i+1] and maxright - price[i]</p>
+<p>This way, we sepereate the prices in to left and right part, while dpl is max profit of one transaction in left part, dpr is for the right part<br>The max profit would be the max of the sum between dpl[i] and dpr[i] for all i in range len(prices)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> prices <span class="keyword">or</span> <span class="built_in">len</span>(prices)&lt;<span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        maxright=prices[-<span class="number">1</span>]</span><br><span class="line">        dp=[<span class="number">0</span>]*<span class="built_in">len</span>(prices)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(prices)-<span class="number">2</span>,-<span class="number">1</span>,-<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> prices[i]&gt;maxright:</span><br><span class="line">                maxright=prices[i]</span><br><span class="line">            <span class="keyword">if</span> prices[i]&gt;prices[i+<span class="number">1</span>]:</span><br><span class="line">                dp[i]=dp[i+<span class="number">1</span>]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                dp[i]=<span class="built_in">max</span>(dp[i+<span class="number">1</span>],maxright-prices[i])</span><br><span class="line">        <span class="keyword">return</span> dp[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -373,9 +375,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
-          
-            <a href="/tags/BFS/" rel="tag"># BFS</a>
+            <a href="/tags/Dynamic-Programming/" rel="tag"># Dynamic Programming</a>
           
         </div>
       
@@ -388,8 +388,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/01/05/103-Binary-Tree-Zigzag-Level-Order-Traversal/" rel="next" title="103. Binary Tree Zigzag Level Order Traversal">
-                <i class="fa fa-chevron-left"></i> 103. Binary Tree Zigzag Level Order Traversal
+              <a href="/2023/01/06/122-Best-Time-to-Buy-and-Sell-Stock-II/" rel="next" title="122. Best Time to Buy and Sell Stock II">
+                <i class="fa fa-chevron-left"></i> 122. Best Time to Buy and Sell Stock II
               </a>
             
           </div>
@@ -397,10 +397,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/05/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/" rel="prev" title="105. Construct Binary Tree from Preorder and Inorder Traversal">
-                105. Construct Binary Tree from Preorder and Inorder Traversal <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>

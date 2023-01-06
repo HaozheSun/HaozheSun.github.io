@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree,BFS," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,12 @@
 
 
 
-<meta name="description" content="Given the root of a binary tree, return its maximum depth. A binary tree’s maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node. Use deque to s">
-<meta property="og:type" content="article">
-<meta property="og:title" content="104. Maximum Depth of Binary Tree">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/104-Maximum-Depth-of-Binary-Tree/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Haozhe Sun&#39;s site">
+<meta property="og:url" content="https://haozhesun.github.io/archives/2023/01/page/3/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="Given the root of a binary tree, return its maximum depth. A binary tree’s maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node. Use deque to s">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-05T21:15:00.000Z">
-<meta property="article:modified_time" content="2023-01-05T21:17:09.192Z">
 <meta property="article:author" content="Haozhe Sun">
-<meta property="article:tag" content="Binary Tree">
-<meta property="article:tag" content="BFS">
 <meta name="twitter:card" content="summary">
 
 
@@ -121,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/104-Maximum-Depth-of-Binary-Tree/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/archives/2023/01/page/3/"/>
 
 
 
 
 
-  <title>104. Maximum Depth of Binary Tree | Haozhe Sun's site</title>
+  <title>Archive | Haozhe Sun's site</title>
   
 
 
@@ -146,7 +140,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left page-archive">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -250,177 +244,78 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block archive">
+    <div id="posts" class="posts-collapse">
+      <span class="archive-move-on"></span>
 
-  
+      <span class="archive-page-counter">
+        
+        
+        
+          
+        
+        Um..! 21 posts in total. Keep on posting.
+      </span>
 
-  
-  
-  
+      
+
+        
+        
+        
+
+        
+          
+          <div class="collection-title">
+            <h1 class="archive-year" id="archive-year-2023">2023</h1>
+          </div>
+        
+        
+
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/104-Maximum-Depth-of-Binary-Tree/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haozhe Sun's site">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2023/01/05/101-Symmetric-Tree/" itemprop="url">
+              
+                <span itemprop="name">101. Symmetric Tree</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">104. Maximum Depth of Binary Tree</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T16:15:00-05:00">
-                2023-01-05
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2023-01-05T14:10:28-05:00"
+              content="2023-01-05" >
+          01-05
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>Given the root of a binary tree, return its maximum depth.</p>
-<p>A binary tree’s maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.</p>
-<p>Use deque to store stack, sepereate different level with None in stack. Use BFS, everytime meet a None in stack means the tree is one level deeper, increment len.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxDepth</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        stack=collections.deque([root,<span class="literal">None</span>])</span><br><span class="line">        <span class="built_in">len</span>=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> stack:</span><br><span class="line">            cur=stack.popleft()</span><br><span class="line">            <span class="keyword">if</span> cur:</span><br><span class="line">                <span class="keyword">if</span> cur.left: stack.append(cur.left)</span><br><span class="line">                <span class="keyword">if</span> cur.right: stack.append(cur.right)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> stack:</span><br><span class="line">                    stack.append(<span class="literal">None</span>)</span><br><span class="line">                <span class="built_in">len</span>+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
-          
-            <a href="/tags/BFS/" rel="tag"># BFS</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2023/01/05/103-Binary-Tree-Zigzag-Level-Order-Traversal/" rel="next" title="103. Binary Tree Zigzag Level Order Traversal">
-                <i class="fa fa-chevron-left"></i> 103. Binary Tree Zigzag Level Order Traversal
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/05/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/" rel="prev" title="105. Construct Binary Tree from Preorder and Inorder Traversal">
-                105. Construct Binary Tree from Preorder and Inorder Traversal <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
 
-    <div class="post-spread">
       
+
     </div>
   </div>
+  
+  
+  
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/2023/01/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/archives/2023/01/">1</a><a class="page-number" href="/archives/2023/01/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
+
 
 
           </div>
@@ -428,10 +323,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -669,10 +560,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
