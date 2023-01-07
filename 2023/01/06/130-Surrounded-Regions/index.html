@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree,Divide and Conquer,Binary Search Tree," />
+  <meta name="keywords" content="DFS," />
 
 
 
@@ -79,19 +79,17 @@
 
 
 
-<meta name="description" content="Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree. Convert linked list to array and use code from 108 123456789101">
+<meta name="description" content="Given an m x n matrix board containing ‘X’ and ‘O’, capture all regions that are 4-directionally surrounded by ‘X’. A region is captured by flipping all ‘O’s into ‘X’s in that surrounded region. It is">
 <meta property="og:type" content="article">
-<meta property="og:title" content="109. Convert Sorted List to Binary Search Tree">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/index.html">
+<meta property="og:title" content="130. Surrounded Regions">
+<meta property="og:url" content="https://haozhesun.github.io/2023/01/06/130-Surrounded-Regions/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree. Convert linked list to array and use code from 108 123456789101">
+<meta property="og:description" content="Given an m x n matrix board containing ‘X’ and ‘O’, capture all regions that are 4-directionally surrounded by ‘X’. A region is captured by flipping all ‘O’s into ‘X’s in that surrounded region. It is">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-05T23:53:27.000Z">
-<meta property="article:modified_time" content="2023-01-05T23:54:21.073Z">
+<meta property="article:published_time" content="2023-01-07T01:07:58.000Z">
+<meta property="article:modified_time" content="2023-01-07T01:15:47.932Z">
 <meta property="article:author" content="Haozhe Sun">
-<meta property="article:tag" content="Binary Tree">
-<meta property="article:tag" content="Divide and Conquer">
-<meta property="article:tag" content="Binary Search Tree">
+<meta property="article:tag" content="DFS">
 <meta name="twitter:card" content="summary">
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/2023/01/06/130-Surrounded-Regions/"/>
 
 
 
 
 
-  <title>109. Convert Sorted List to Binary Search Tree | Haozhe Sun's site</title>
+  <title>130. Surrounded Regions | Haozhe Sun's site</title>
   
 
 
@@ -265,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/109-Convert-Sorted-List-to-Binary-Search-Tree/">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/06/130-Surrounded-Regions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -282,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">109. Convert Sorted List to Binary Search Tree</h1>
+          <h1 class="post-title" itemprop="name headline">130. Surrounded Regions</h1>
         
 
         <div class="post-meta">
@@ -294,8 +292,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T18:53:27-05:00">
-                2023-01-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-06T20:07:58-05:00">
+                2023-01-06
               </time>
             
 
@@ -354,9 +352,10 @@
       
 
       
-        <p>Given the head of a singly linked list where elements are sorted in ascending order, convert it to a height-balanced binary search tree.</p>
-<p>Convert linked list to array and use code from 108</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"># class ListNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, next=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.next = next</span></span><br><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">sortedListToBST</span>(<span class="params">self, head: <span class="type">Optional</span>[ListNode]</span>) -&gt; <span class="type">Optional</span>[TreeNode]:</span><br><span class="line">        nums=[]</span><br><span class="line">        <span class="keyword">while</span> head:</span><br><span class="line">            nums.append(head.val)</span><br><span class="line">            head=head.<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">start=<span class="number">0</span>,end=<span class="built_in">len</span>(<span class="params">nums</span>)-<span class="number">1</span></span>):</span><br><span class="line">            <span class="keyword">if</span> start&gt;end:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            mid = start+(end-start)//<span class="number">2</span></span><br><span class="line">            root = TreeNode(nums[mid])</span><br><span class="line">            root.left = helper(start,mid-<span class="number">1</span>)</span><br><span class="line">            root.right = helper(mid+<span class="number">1</span>,end)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        <span class="keyword">return</span> helper()</span><br></pre></td></tr></table></figure>
+        <p>Given an m x n matrix board containing ‘X’ and ‘O’, capture all regions that are 4-directionally surrounded by ‘X’.</p>
+<p>A region is captured by flipping all ‘O’s into ‘X’s in that surrounded region.</p>
+<p>It is observed that all ‘O’ that is not connected to the boarders by ‘O’s will be flipped.<br>So we do a DFS for each ‘O’ on the boarder to mark all ‘O’s that is connected to the boarder, and flip the ones that is not marked</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>(<span class="title class_ inherited__">object</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">solve</span>(<span class="params">self, board</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        :type board: List[List[str]]</span></span><br><span class="line"><span class="string">        :rtype: None Do not return anything, modify board in-place instead.</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> board <span class="keyword">or</span> <span class="keyword">not</span> board[<span class="number">0</span>]:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        self.ROWS = <span class="built_in">len</span>(board)</span><br><span class="line">        self.COLS = <span class="built_in">len</span>(board[<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.ROWS):</span><br><span class="line">            self.DFS(board, i, <span class="number">0</span>)</span><br><span class="line">            self.DFS(board, i, self.COLS-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,self.COLS-<span class="number">1</span>):</span><br><span class="line">            self.DFS(board, <span class="number">0</span>, i)</span><br><span class="line">            self.DFS(board, self.ROWS-<span class="number">1</span>, i)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> r <span class="keyword">in</span> <span class="built_in">range</span>(self.ROWS):</span><br><span class="line">            <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">range</span>(self.COLS):</span><br><span class="line">                <span class="keyword">if</span> board[r][c] == <span class="string">&#x27;O&#x27;</span>:   board[r][c] = <span class="string">&#x27;X&#x27;</span>  <span class="comment"># captured</span></span><br><span class="line">                <span class="keyword">elif</span> board[r][c] == <span class="string">&#x27;E&#x27;</span>: board[r][c] = <span class="string">&#x27;O&#x27;</span>  <span class="comment"># escaped</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">DFS</span>(<span class="params">self, board, row, col</span>):</span><br><span class="line">        <span class="keyword">if</span> board[row][col] != <span class="string">&#x27;O&#x27;</span>:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        board[row][col] = <span class="string">&#x27;E&#x27;</span></span><br><span class="line">        <span class="keyword">if</span> col &lt; self.COLS-<span class="number">1</span>: self.DFS(board, row, col+<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> row &lt; self.ROWS-<span class="number">1</span>: self.DFS(board, row+<span class="number">1</span>, col)</span><br><span class="line">        <span class="keyword">if</span> col &gt; <span class="number">0</span>: self.DFS(board, row, col-<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">if</span> row &gt; <span class="number">0</span>: self.DFS(board, row-<span class="number">1</span>, col)</span><br></pre></td></tr></table></figure>
       
     </div>
     
@@ -373,11 +372,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
-          
-            <a href="/tags/Divide-and-Conquer/" rel="tag"># Divide and Conquer</a>
-          
-            <a href="/tags/Binary-Search-Tree/" rel="tag"># Binary Search Tree</a>
+            <a href="/tags/DFS/" rel="tag"># DFS</a>
           
         </div>
       
@@ -390,8 +385,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/01/05/108-Convert-Sorted-Array-to-Binary-Search-Tree/" rel="next" title="108. Convert Sorted Array to Binary Search Tree">
-                <i class="fa fa-chevron-left"></i> 108. Convert Sorted Array to Binary Search Tree
+              <a href="/2023/01/06/129-Sum-Root-to-Leaf-Numbers/" rel="next" title="129. Sum Root to Leaf Numbers">
+                <i class="fa fa-chevron-left"></i> 129. Sum Root to Leaf Numbers
               </a>
             
           </div>
@@ -399,10 +394,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/05/110-Balanced-Binary-Tree/" rel="prev" title="110. Balanced Binary Tree">
-                110. Balanced Binary Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
