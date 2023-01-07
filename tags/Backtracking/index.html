@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree,Recursion,Divide and Conquer,Hash," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,20 +79,12 @@
 
 
 
-<meta name="description" content="Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree. It">
-<meta property="og:type" content="article">
-<meta property="og:title" content="105. Construct Binary Tree from Preorder and Inorder Traversal">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/05/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Haozhe Sun&#39;s site">
+<meta property="og:url" content="https://haozhesun.github.io/tags/Backtracking/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree. It">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-05T21:47:14.000Z">
-<meta property="article:modified_time" content="2023-01-05T21:51:30.459Z">
 <meta property="article:author" content="Haozhe Sun">
-<meta property="article:tag" content="Binary Tree">
-<meta property="article:tag" content="Recursion">
-<meta property="article:tag" content="Divide and Conquer">
-<meta property="article:tag" content="Hash">
 <meta name="twitter:card" content="summary">
 
 
@@ -123,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/05/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/tags/Backtracking/"/>
 
 
 
 
 
-  <title>105. Construct Binary Tree from Preorder and Inorder Traversal | Haozhe Sun's site</title>
+  <title>Tag: Backtracking | Haozhe Sun's site</title>
   
 
 
@@ -148,7 +140,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -252,181 +244,54 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>Backtracking<small>Tag</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/05/105-Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haozhe Sun's site">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2023/01/07/131-Palindrome-Partitioning/" itemprop="url">
+              
+                <span itemprop="name">131. Palindrome Partitioning</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">105. Construct Binary Tree from Preorder and Inorder Traversal</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-05T16:47:14-05:00">
-                2023-01-05
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2023-01-07T15:31:22-05:00"
+              content="2023-01-07" >
+          01-07
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.</p>
-<p>It is easy to observe that preorder[0] is the root of the tree, and find the index of preorder[0] in inorder can sepereate the tree to left and right subtree, repeat this process and we will construct the tree.<br>Use hash table to store val and index pair in inorder list for time complexity</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">buildTree</span>(<span class="params">self, preorder: <span class="type">List</span>[<span class="built_in">int</span>], inorder: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="type">Optional</span>[TreeNode]:</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">helper</span>(<span class="params">start=<span class="number">0</span>,end=<span class="built_in">len</span>(<span class="params">inorder</span>)-<span class="number">1</span></span>):</span><br><span class="line">            <span class="keyword">nonlocal</span> i</span><br><span class="line">            <span class="keyword">if</span> start&gt;end:</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">            val=preorder[i]</span><br><span class="line">            root= TreeNode(val)</span><br><span class="line">            i+=<span class="number">1</span></span><br><span class="line">            root.left = helper(start, inorder_index_map[val] - <span class="number">1</span>)</span><br><span class="line">            root.right = helper(inorder_index_map[val] + <span class="number">1</span>, end)</span><br><span class="line">            <span class="keyword">return</span> root</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        inorder_index_map = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> index, value <span class="keyword">in</span> <span class="built_in">enumerate</span>(inorder):</span><br><span class="line">            inorder_index_map[value] = index</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> helper()</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
-          
-            <a href="/tags/Recursion/" rel="tag"># Recursion</a>
-          
-            <a href="/tags/Divide-and-Conquer/" rel="tag"># Divide and Conquer</a>
-          
-            <a href="/tags/Hash/" rel="tag"># Hash</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2023/01/05/104-Maximum-Depth-of-Binary-Tree/" rel="next" title="104. Maximum Depth of Binary Tree">
-                <i class="fa fa-chevron-left"></i> 104. Maximum Depth of Binary Tree
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/05/106-Construct-Binary-Tree-from-Inorder-and-Postorder-Traversal/" rel="prev" title="106. Construct Binary Tree from Inorder and Postorder Traversal">
-                106. Construct Binary Tree from Inorder and Postorder Traversal <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -434,10 +299,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -675,10 +536,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
