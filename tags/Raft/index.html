@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Binary Tree," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,17 +79,12 @@
 
 
 
-<meta name="description" content="A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path do">
-<meta property="og:type" content="article">
-<meta property="og:title" content="124. Binary Tree Maximum Path Sum">
-<meta property="og:url" content="https://haozhesun.github.io/2023/01/06/124-Binary-Tree-Maximum-Path-Sum/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Haozhe Sun&#39;s site">
+<meta property="og:url" content="https://haozhesun.github.io/tags/Raft/index.html">
 <meta property="og:site_name" content="Haozhe Sun&#39;s site">
-<meta property="og:description" content="A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path do">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-01-06T21:39:51.000Z">
-<meta property="article:modified_time" content="2023-01-06T21:44:13.945Z">
 <meta property="article:author" content="Haozhe Sun">
-<meta property="article:tag" content="Binary Tree">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="https://haozhesun.github.io/2023/01/06/124-Binary-Tree-Maximum-Path-Sum/"/>
+  <link rel="canonical" href="https://haozhesun.github.io/tags/Raft/"/>
 
 
 
 
 
-  <title>124. Binary Tree Maximum Path Sum | Haozhe Sun's site</title>
+  <title>Tag: Raft | Haozhe Sun's site</title>
   
 
 
@@ -145,7 +140,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -249,177 +244,54 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>Raft<small>Tag</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/06/124-Binary-Tree-Maximum-Path-Sum/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haozhe Sun's site">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2023/01/16/In-Search-of-an-Understandable-Consensus-Algorithm/" itemprop="url">
+              
+                <span itemprop="name">In Search of an Understandable Consensus Algorithm</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">124. Binary Tree Maximum Path Sum</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-06T16:39:51-05:00">
-                2023-01-06
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2023-01-16T04:10:12-05:00"
+              content="2023-01-16" >
+          01-16
+        </time>
+      </div>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p>A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.</p>
-<p>The path sum of a path is the sum of the node’s values in the path.</p>
-<p>Given the root of a binary tree, return the maximum path sum of any non-empty path.</p>
-<p>For each node, compute the max positive path to this node in it’s left and right subtree<br>Check if left subtree + current node + right subtree is the max path so far, if so, update maxSum<br>return the max of left or right subtree path + current node, this will be the max path sum for the subtree with root be current node.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxPathSum</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">subPathSum</span>(<span class="params">root</span>):</span><br><span class="line">            <span class="keyword">nonlocal</span> maxSum</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            left = <span class="built_in">max</span>(subPathSum(root.left),<span class="number">0</span>)</span><br><span class="line">            right = <span class="built_in">max</span>(subPathSum(root.right),<span class="number">0</span>)</span><br><span class="line">            maxSum=<span class="built_in">max</span>(maxSum, left+right+root.val)</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">max</span>(left,right)+root.val</span><br><span class="line">        maxSum=-<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        subPathSum(root)</span><br><span class="line">        <span class="keyword">return</span> maxSum</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2023/01/06/123-Best-Time-to-Buy-and-Sell-Stock-III/" rel="next" title="123. Best Time to Buy and Sell Stock III">
-                <i class="fa fa-chevron-left"></i> 123. Best Time to Buy and Sell Stock III
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2023/01/06/125-Valid-Palindrome/" rel="prev" title="125. Valid Palindrome">
-                125. Valid Palindrome <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -427,10 +299,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -668,10 +536,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 
