@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Web-Scale Applications,Coordination,ZooKeeper," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="https:&#x2F;&#x2F;www.usenix.org&#x2F;legacy&#x2F;events&#x2F;atc10&#x2F;tech&#x2F;full_papers&#x2F;Hunt.pdf ZooKeeper provides an API that enables application developers to implement their own primitivesZookeeper implements an API that man">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZooKeeper: Wait-free coordination for Internet-scale systems">
+<meta property="og:url" content="https://haozhesun.github.io/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/index.html">
+<meta property="og:site_name" content="Haozhe Sun&#39;s site">
+<meta property="og:description" content="https:&#x2F;&#x2F;www.usenix.org&#x2F;legacy&#x2F;events&#x2F;atc10&#x2F;tech&#x2F;full_papers&#x2F;Hunt.pdf ZooKeeper provides an API that enables application developers to implement their own primitivesZookeeper implements an API that man">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://haozhesun.github.io/images/YMB.png">
+<meta property="article:published_time" content="2023-01-17T15:17:48.000Z">
+<meta property="article:modified_time" content="2023-01-18T05:24:46.767Z">
+<meta property="article:author" content="Haozhe Sun">
+<meta property="article:tag" content="Web-Scale Applications">
+<meta property="article:tag" content="Coordination">
+<meta property="article:tag" content="ZooKeeper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://haozhesun.github.io/images/YMB.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://haozhesun.github.io/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/"/>
+
+
+
+
+
+  <title>ZooKeeper: Wait-free coordination for Internet-scale systems | Haozhe Sun's site</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Haozhe Sun's site</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haozhe Sun's site">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ZooKeeper: Wait-free coordination for Internet-scale systems</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-17T10:17:48-05:00">
+                2023-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Paper-Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Paper Note</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a target="_blank" rel="noopener" href="https://www.usenix.org/legacy/events/atc10/tech/full_papers/Hunt.pdf">https://www.usenix.org/legacy/events/atc10/tech/full_papers/Hunt.pdf</a></p>
+<p>ZooKeeper provides an API that enables application developers to implement their own primitives<br>Zookeeper implements an API that manipulates simple waitfree data objects organized hierarchically as in file systems, instead of useing blocking primitives, such as locks.<br>Blocking primitives for a coordination service can cause slow or faulty clients to impact negatively the performance of faster clients.<br>FIFO client ordering of all operations and linearizable writes enables an efficient implementation of the service and it is sufficient to implement coordination primitives of interest to our applications.<br>ZooKeeper uses a simple pipelined architecture allows to have hundreds or thousands of requests outstanding while still achieving low latency.<br>Such a pipeline enables the execution of operations from a single client in FIFO order.<br>implement a leader-based atomic broadcast protocol, called Zab, To guarantee that update operations satisfy linearizability<br>In ZooKeeper, servers process read operations locally, and we do not use Zab to totally order them.<br>ZooKeeper uses a watch mechanism to enable clients to cache data without managing the client cache directly.<br>znode is an in-memory data node in the ZooKeeper data, which is organized in a hierarchical namespace referred to as the data tree.<br>ZooKeeper provides to its clients the abstraction of a set of data nodes (znodes), organized according to a hierarchical name space.<br>Use the standard UNIX notation for file system paths. For example, we use &#x2F;A&#x2F;B&#x2F;C to denote the path to znode C, where C has B as its parent and B has A as its parent. All znodes store data, and all znodes, except for ephemeral znodes, can have children.<br>There are two types of znodes that a client can create:<br>Regular: Clients manipulate regular znodes by creating and deleting them explicitly;<br>Ephemeral: Clients create such znodes, and they either delete them explicitly, or let the system remove them automatically when the session that creates them terminates (deliberately or due to a failure).<br>When a client issues a read operation with a watch flag set, the operation completes as normal except that the server promises to notify the client when the information returned has changed<br>Watches are unregistered once triggered or the session closes, do not provide the change<br>znodes map to abstractions of the client application, typically corresponding to meta-data used for coordination purposes.<br>An application uses the synchronous API when it needs to execute a single ZooKeeper operation and it has no concurrent tasks to execute<br>The asynchronous API enables an application to have both multiple outstanding ZooKeeper operations and other tasks executed in parallel.</p>
+<p>ZooKeeper has two basic ordering guarantees:<br>Linearizable writes: all requests that update the state of ZooKeeper are serializable and respect precedence; allow a client to have multiple outstanding operations, guarantee FIFO order.<br>FIFO client order: all requests from a given client are executed in the order that they were sent by the client.<br>With ZooKeeper, the new leader can designate a path as the ready znode; other processes will only use the configuration when that znode exists. new leader makes the configuration change by deleting ready, updating configuration znodes, and creating ready.</p>
+<p>Configuration Management<br>Starting processes obtain their configuration by reading zc with the watch flag set to true. if zc is ever updated, the processes are notified and read the new configuration, again setting the watch flag to true.</p>
+<p>Rendezvous<br>Client create a rendezvous znode, zr, passes the full pathname of zr as a startup parameter of the master and worker processes<br>When the master starts it fills in zr with information about addresses and ports it is using. When workers start, they read zr with watch set to true. If zr has not been filled in yet, the worker waits to be notified when zr is updated.<br>If zr is an ephemeral node, master and worker processes can watch for zr to be deleted and clean themselves up when the client ends.</p>
+<p>Group Membership<br>Use a znode, zg to represent the group. When a process member of the group starts, it creates an ephemeral child znode under zg.<br>If the process fails or ends, the znode that represents it under zg is automatically removed.<br>Processes can obtain group information by simply listing the children of zg.</p>
+<p>Simple Locks<br>A client tries to create the designated znode with the EPHEMERAL flag to acquire a lock.<br>If create fail, the client can read the znode with the watch flag set to be notified if the current leader dies.<br>A client releases the lock when it dies or explicitly deletes the znode.<br>problems:<br>suffers from the herd effect, all client waiting will try to acquire lock when available.<br>only implements exclusive locking</p>
+<p>Simple Locks without Herd Effect<br>Lock<br>1 n &#x3D; create(l + “&#x2F;lock-”, EPHEMERAL|SEQUENTIAL)<br>2 C &#x3D; getChildren(l, false)<br>3 if n is lowest znode in C, exit<br>4 p &#x3D; znode in C ordered just before n<br>5 if exists(p, true) wait for watch event<br>6 goto 2<br>Unlock<br>1 delete(n)<br>A client create the znode with the EPHEMERAL and SEQUENTIAL flag.<br>The use of the SEQUENTIAL flag orders the client’s attempt to acquire the lock<br>If the client’s znode has the lowest sequence number the client holds the lock.<br>advantages:<br>removal of a znode only causes one client to wake up, no herd effect<br>no polling or timeouts<br>can see by browsing the ZooKeeper data the amount of lock contention, break locks, and debug locking problems.</p>
+<p>Read&#x2F;Write Locks<br>Write Lock<br>1 n &#x3D; create(l + “&#x2F;write-”, EPHEMERAL|SEQUENTIAL)<br>2 C &#x3D; getChildren(l, false)<br>3 if n is lowest znode in C, exit<br>4 p &#x3D; znode in C ordered just before n<br>5 if exists(p, true) wait for event<br>6 goto 2</p>
+<p>Read Lock<br>1 n &#x3D; create(l + “&#x2F;read-”, EPHEMERAL|SEQUENTIAL)<br>2 C &#x3D; getChildren(l, false)<br>3 if no write znodes lower than n in C, exit<br>4 p &#x3D; write znode in C ordered just before n    &#x2F;&#x2F;only earlier write lock znodes prevent the client from obtaining a read lock.<br>5 if exists(p, true) wait for event<br>6 goto 3</p>
+<p>Double Barrier<br>Use a znode b as barrier.<br>Every process p registers with b by creating a znode as a child of b on entry<br>unregisters – removes the child – when it is ready to leave (finished computation).<br>Processes can enter the barrier (start computation) when the number of child znodes of b exceeds the barrier threshold. Processes can leave the barrier when all of the processes have removed their children.<br>to enter, processes watch for the existence of a ready child of b that will be created by the process that causes the number of children to exceed the barrier threshold.<br>To leave, processes watch for a particular child to disappear after their znode has been removed.</p>
+<p>ZooKeeper Applications</p>
+<p>The Fetching Service<br>The Fetching Service uses ZooKeeper mainly to manage configuration metadata, also uses ZooKeeper to elect masters (leader election).<br>Advantages of using ZooKeeper for FS are recovering from failures of masters, guaranteeing availability despite failures, and decoupling the clients from the servers, allowing them to direct their request to healthy servers by just reading their status from ZooKeeper<br>the read:write ratio varies between 10:1 and 100:1. </p>
+<p>Katta<br>Katta uses ZooKeeper to track the status of slave servers and the master (group membership), and to handle master failover (leader election), track and propagate the assignments of shards to slaves (configuration management).</p>
+<p>Yahoo! Message Broker<br>YMB uses ZooKeeper to manage the distribution of topics (configuration metadata), deal with failures of machines in the system (failure detection and group membership), and control system operation.<br><img src="/images/YMB.png" alt="YMB"><br>Each YMB server creates an ephemeral znode under nodes with load and status information providing both group membership and status information through ZooKeeper.<br>primary and backup server znodes allow servers to discover the servers in charge of a topic and manage leader election and server crashes</p>
+<p><strong>ZooKeeper Implementation</strong><br>ZooKeeper provides availability by replicating the ZooKeeper data on each server that composes the service.<br>they use an agreement protocol for write requests (atomic broadcast)<br>a server simply reads the state of the local database for read requests<br>replicated database is an in-memory database containing the entire data tree<br>log updates to disk, and we force writes to be on the disk media before they are applied to the in-memory database<br>keep a replay log (a write-ahead log, in our case) of committed operations and generate periodic snapshots of the in-memory database<br>write requests are forwarded to a single server, called the leader, followers receive message proposals consisting of state changes from the leader and agree upon state changes.</p>
+<p>ZooKeeper use atomic broadcast protocol Zab<br>use TCP for our transport so message order is maintained by the network<br>use the leader chosen by Zab as the ZooKeeper leader, so that the same process that creates transactions also proposes them<br>use the log to keep track of proposals as the write-ahead log for the in memory database, so that we do not have to write messages twice to disk.<br>recovers from a crash<br>ZooKeeper uses periodic snapshots and only requires redelivery of messages since the start of the snapshot.<br>servers handle notifications locally. Only the server that a client is connected to tracks and triggers notifications for that client</p>
+<p>Increasing number of servers increase reads throughput and decrease writes throughput, since read operate on single server, write needs atomic broadcast.<br>ZooKeeper is able to achieve such high throughput by distributing load across the servers that makeup the service.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Web-Scale-Applications/" rel="tag"># Web-Scale Applications</a>
+          
+            <a href="/tags/Coordination/" rel="tag"># Coordination</a>
+          
+            <a href="/tags/ZooKeeper/" rel="tag"># ZooKeeper</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2023/01/16/In-Search-of-an-Understandable-Consensus-Algorithm/" rel="next" title="In Search of an Understandable Consensus Algorithm">
+                <i class="fa fa-chevron-left"></i> In Search of an Understandable Consensus Algorithm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/HaozheSun" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:sunhaozhe.sun@outlook.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Haozhe Sun</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

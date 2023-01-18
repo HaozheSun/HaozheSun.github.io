@@ -259,6 +259,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haozhe Sun's site">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/" itemprop="url">ZooKeeper: Wait-free coordination for Internet-scale systems</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-17T10:17:48-05:00">
+                2023-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Paper-Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Paper Note</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a target="_blank" rel="noopener" href="https://www.usenix.org/legacy/events/atc10/tech/full_papers/Hunt.pdf">https://www.usenix.org/legacy/events/atc10/tech/full_papers/Hunt.pdf</a></p>
+<p>ZooKeeper provides an API that enables application developers to implement their own primitives<br>Zookeeper implements an API that manipulates simple waitfree data objects organized hierarchically as in file systems, instead of useing blocking primitives, such as locks.<br>Blocking primitives for a coordination service can cause slow or faulty clients to impact negatively the performance of faster clients.<br>FIFO client ordering of all operations and linearizable writes enables an efficient implementation of the service and it is sufficient to implement coordination primitives of interest to our applications.<br>ZooKeeper uses a simple pipelined architecture allows to have hundreds or thousands of requests outstanding while still achieving low latency.<br>Such a pipeline enables the execution of operations from a single client in FIFO order.<br>implement a leader-based atomic broadcast protocol, called Zab, To guarantee that update operations satisfy linearizability<br>In ZooKeeper, servers process read operations locally, and we do not use Zab to totally order them.<br>ZooKeeper uses a watch mechanism to enable clients to cache data without managing the client cache directly.<br>znode is an in-memory data node in the ZooKeeper data, which is organized in a hierarchical namespace referred to as the data tree.<br>ZooKeeper provides to its clients the abstraction of a set of data nodes (znodes), organized according to a hierarchical name space.<br>Use the standard UNIX notation for file system paths. For example, we use &#x2F;A&#x2F;B&#x2F;C to denote the path to znode C, where C has B as its parent and B has A as its parent. All znodes store data, and all znodes, except for ephemeral znodes, can have children.<br>There are two types of znodes that a client can create:<br>Regular: Clients manipulate regular znodes by creating and deleting them explicitly;<br>Ephemeral: Clients create such znodes, and they either delete them explicitly, or let the system remove them automatically when the session that creates them terminates (deliberately or due to a failure).<br>When a client issues a read operation with a watch flag set, the operation completes as normal except that the server promises to notify the client when the information returned has changed<br>Watches are unregistered once triggered or the session closes, do not provide the change<br>znodes map to abstractions of the client application, typically corresponding to meta-data used for coordination purposes.<br>An application uses the synchronous API when it needs to execute a single ZooKeeper operation and it has no concurrent tasks to execute<br>The asynchronous API enables an application to have both multiple outstanding ZooKeeper operations and other tasks executed in parallel.</p>
+<p>ZooKeeper has two basic ordering guarantees:<br>Linearizable writes: all requests that update the state of ZooKeeper are serializable and respect precedence; allow a client to have multiple outstanding operations, guarantee FIFO order.<br>FIFO client order: all requests from a given client are executed in the order that they were sent by the client.<br>With ZooKeeper, the new leader can designate a path as the ready znode; other processes will only use the configuration when that znode exists. new leader makes the configuration change by deleting ready, updating configuration znodes, and creating ready.</p>
+<p>Configuration Management<br>Starting processes obtain their configuration by reading zc with the watch flag set to true. if zc is ever updated, the processes are notified and read the new configuration, again setting the watch flag to true.</p>
+<p>Rendezvous<br>Client create a rendezvous znode, zr, passes the full pathname of zr as a startup parameter of the master and worker processes<br>When the master starts it fills in zr with information about addresses and ports it is using. When workers start, they read zr with watch set to true. If zr has not been filled in yet, the worker waits to be notified when zr is updated.<br>If zr is an ephemeral node, master and worker processes can watch for zr to be deleted and clean themselves up when the client ends.</p>
+<p>Group Membership<br>Use a znode, zg to represent the group. When a process member of the group starts, it creates an ephemeral child znode under zg.<br>If the process fails or ends, the znode that represents it under zg is automatically removed.<br>Processes can obtain group information by simply listing the children of zg.</p>
+<p>Simple Locks<br>A client tries to create the designated znode with the EPHEMERAL flag to acquire a lock.<br>If create fail, the client can read the znode with the watch flag set to be notified if the current leader dies.<br>A client releases the lock when it dies or explicitly deletes the znode.<br>problems:<br>suffers from the herd effect, all client waiting will try to acquire lock when available.<br>only implements exclusive locking</p>
+<p>Simple Locks without Herd Effect<br>Lock<br>1 n &#x3D; create(l + “&#x2F;lock-”, EPHEMERAL|SEQUENTIAL)<br>2 C &#x3D; getChildren(l, false)<br>3 if n is lowest znode in C, exit<br>4 p &#x3D; znode in C ordered just before n<br>5 if exists(p, true) wait for watch event<br>6 goto 2<br>Unlock<br>1 delete(n)<br>A client create the znode with the EPHEMERAL and SEQUENTIAL flag.<br>The use of the SEQUENTIAL flag orders the client’s attempt to acquire the lock<br>If the client’s znode has the lowest sequence number the client holds the lock.<br>advantages:<br>removal of a znode only causes one client to wake up, no herd effect<br>no polling or timeouts<br>can see by browsing the ZooKeeper data the amount of lock contention, break locks, and debug locking problems.</p>
+<p>Read&#x2F;Write Locks<br>Write Lock<br>1 n &#x3D; create(l + “&#x2F;write-”, EPHEMERAL|SEQUENTIAL)<br>2 C &#x3D; getChildren(l, false)<br>3 if n is lowest znode in C, exit<br>4 p &#x3D; znode in C ordered just before n<br>5 if exists(p, true) wait for event<br>6 goto 2</p>
+<p>Read Lock<br>1 n &#x3D; create(l + “&#x2F;read-”, EPHEMERAL|SEQUENTIAL)<br>2 C &#x3D; getChildren(l, false)<br>3 if no write znodes lower than n in C, exit<br>4 p &#x3D; write znode in C ordered just before n    &#x2F;&#x2F;only earlier write lock znodes prevent the client from obtaining a read lock.<br>5 if exists(p, true) wait for event<br>6 goto 3</p>
+<p>Double Barrier<br>Use a znode b as barrier.<br>Every process p registers with b by creating a znode as a child of b on entry<br>unregisters – removes the child – when it is ready to leave (finished computation).<br>Processes can enter the barrier (start computation) when the number of child znodes of b exceeds the barrier threshold. Processes can leave the barrier when all of the processes have removed their children.<br>to enter, processes watch for the existence of a ready child of b that will be created by the process that causes the number of children to exceed the barrier threshold.<br>To leave, processes watch for a particular child to disappear after their znode has been removed.</p>
+<p>ZooKeeper Applications</p>
+<p>The Fetching Service<br>The Fetching Service uses ZooKeeper mainly to manage configuration metadata, also uses ZooKeeper to elect masters (leader election).<br>Advantages of using ZooKeeper for FS are recovering from failures of masters, guaranteeing availability despite failures, and decoupling the clients from the servers, allowing them to direct their request to healthy servers by just reading their status from ZooKeeper<br>the read:write ratio varies between 10:1 and 100:1. </p>
+<p>Katta<br>Katta uses ZooKeeper to track the status of slave servers and the master (group membership), and to handle master failover (leader election), track and propagate the assignments of shards to slaves (configuration management).</p>
+<p>Yahoo! Message Broker<br>YMB uses ZooKeeper to manage the distribution of topics (configuration metadata), deal with failures of machines in the system (failure detection and group membership), and control system operation.<br><img src="/images/YMB.png" alt="YMB"><br>Each YMB server creates an ephemeral znode under nodes with load and status information providing both group membership and status information through ZooKeeper.<br>primary and backup server znodes allow servers to discover the servers in charge of a topic and manage leader election and server crashes</p>
+<p><strong>ZooKeeper Implementation</strong><br>ZooKeeper provides availability by replicating the ZooKeeper data on each server that composes the service.<br>they use an agreement protocol for write requests (atomic broadcast)<br>a server simply reads the state of the local database for read requests<br>replicated database is an in-memory database containing the entire data tree<br>log updates to disk, and we force writes to be on the disk media before they are applied to the in-memory database<br>keep a replay log (a write-ahead log, in our case) of committed operations and generate periodic snapshots of the in-memory database<br>write requests are forwarded to a single server, called the leader, followers receive message proposals consisting of state changes from the leader and agree upon state changes.</p>
+<p>ZooKeeper use atomic broadcast protocol Zab<br>use TCP for our transport so message order is maintained by the network<br>use the leader chosen by Zab as the ZooKeeper leader, so that the same process that creates transactions also proposes them<br>use the log to keep track of proposals as the write-ahead log for the in memory database, so that we do not have to write messages twice to disk.<br>recovers from a crash<br>ZooKeeper uses periodic snapshots and only requires redelivery of messages since the start of the snapshot.<br>servers handle notifications locally. Only the server that a client is connected to tracks and triggers notifications for that client</p>
+<p>Increasing number of servers increase reads throughput and decrease writes throughput, since read operate on single server, write needs atomic broadcast.<br>ZooKeeper is able to achieve such high throughput by distributing load across the servers that makeup the service.</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/16/In-Search-of-an-Understandable-Consensus-Algorithm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1574,151 +1733,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/06/122-Best-Time-to-Buy-and-Sell-Stock-II/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haozhe Sun's site">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2023/01/06/122-Best-Time-to-Buy-and-Sell-Stock-II/" itemprop="url">122. Best Time to Buy and Sell Stock II</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-06T07:53:07-05:00">
-                2023-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>You are given an integer array prices where prices[i] is the price of a given stock on the ith day.</p>
-<p>On each day, you may decide to buy and&#x2F;or sell the stock. You can only hold at most one share of the stock at any time. However, you can buy it then immediately sell it on the same day.</p>
-<p>Find and return the maximum profit you can achieve.</p>
-<p>Traverse prices from left to right, if price[i]&lt; price[i+1], there is a profit, andd price[i+1]-price[i] to the result.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxProfit</span>(<span class="params">self, prices: <span class="type">List</span>[<span class="built_in">int</span>]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> prices <span class="keyword">or</span> <span class="built_in">len</span>(prices)&lt;<span class="number">2</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        ans=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(prices)-<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> prices[i]&lt;prices[i+<span class="number">1</span>]:</span><br><span class="line">                ans+=prices[i+<span class="number">1</span>]-prices[i]</span><br><span class="line">        <span class="keyword">return</span> ans</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1769,7 +1783,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1791,7 +1805,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
