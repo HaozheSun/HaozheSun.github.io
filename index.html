@@ -259,6 +259,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/26/The-Google-File-System/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Haozhe Sun's site">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2023/01/26/The-Google-File-System/" itemprop="url">The Google File System</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-26T12:26:35-05:00">
+                2023-01-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Paper-Note/" itemprop="url" rel="index">
+                    <span itemprop="name">Paper Note</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a target="_blank" rel="noopener" href="https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf">https://static.googleusercontent.com/media/research.google.com/en//archive/gfs-sosp2003.pdf</a></p>
+<p><img src="/images/GFS.png" alt="GFS"></p>
+<p>GFS has one master and many chunkservers. Files are divided into fixed size chunks and stored on local disks of chuckservers. Chunkis identified by an immutable and globally unique 64 bit chunk handle assigned by the master when created. Chucks are replicated for reliability.<br>Master maintains all metadata, send HeartBeat messages to chunkservers to give instructions and collect its state.<br>Clients interact with the master for metadata operations, but all data-bearing communication goes directly to the chunkservers.</p>
+<p>Clients ask the master which chunkservers it should contact for read and write, caches this information for a limited time and interacts with the chunkservers directly for many subsequent operations.</p>
+<p>Chunksize is 64 MB, much larger than typical file system blocksizes, stored as a plain Linux file on a chunkserver and is extended only as needed<br>Lazy space allocation avoids wasting space due to internal fragmentation<br>large chunksize reduces clients’ need to interact with the master because reads and writes on the same chunkrequire only one initial request to the master for chunklocation information.<br>client is more likely to perform many operations on a given large chunk, reduce network overhead by keeping TCP connection to the chunkserver over an extended period of time.<br>reduces the size of the metadata stored on the master, allow it tobe stored in memory.</p>
+<p>The master stores the file and chunknamespaces, the mapping from files to chunks and the locations of each chunk’s replicas.<br>namespaces and file-to-chunkmapping are also kept persistent by logging mutations to an operation log stored on the master’s local diskand replicated on remote machines<br>allows update the master state simply, reliably,without risking inconsistencies in the event of a master crash. master asks each chunkserver about its chunks at master startup and whenever a chunkserver joins the cluster.</p>
+<p>metadata is stored in memory, master periodically scan through its entire state in the background.<br>periodic scanning is used to implement chunkgarbage collection, re-replication in the presence of chunkserver failures, and chunkmigration to balance load and diskspace usage across chunkservers</p>
+<p>operation log contains a historical record of critical metadata changes, replicated on multiple remote machines and respond to a client operation only after flushing the corresponding log record to disk both locally and remotely. master recovers its file system state by replaying the operation log.<br>master checkpoints its state when log reach certain size, so it can recover by loading latest checkpoint from local disk and replay only recent log after checkpoint.</p>
+<p>A mutation is an operation that changes the contents or metadata of a chunksuch as a write or an append operation. Each mutation is performed at all the chunk’s replicas.<br>master grants a chunklease to one of the replicas, which we call the primary. The primary picks a serial order for all mutations to the chunk. All replicas follow this order when applying mutations.  A lease has timeout of 60 seconds. primary can request extension when chunk is being mutated, extension requests and grants are on the HeartBeat messages. Master can revoke a lease before expires, can grant a new lease to another replica after old one expires even old primary does not response to master.</p>
+<p>Client ask master for chunkserver holding lease for the chunk and other replicas’ location, grant a lease if no one has release. client cache the reply for future mutations. Client only communicate with master when primary is unreachable or it no longer holds a lease. client pushes the data to all the replicas, Once all the replicas have acknowledged receiving the data, the client sends a write request to the primary. primary assigns consecutive serial numbers to all the mutations it receives. primary forwards the write request to all secondary replicas. Each secondary replica applies mutations in the same serial number order assigned by the primary. secondaries all reply to the primary when finished.  primary replies to the client</p>
+<p>While control flows from the client to the primary and then to all secondaries, data is pushed linearly along a carefully picked chain of chunkservers in a pipelined fashion.<br>To avoid network bottlenecks and high-latency links (e.g., inter-switch links are often both) as much as possible, each machine forwards the data to the “closest” machine in thenetworktopology that has not received it. Once a chunkserver receives some data, it starts forwarding immediately</p>
+<p>GFS provides an atomic append operation called record append. the client specifies only the data. GFS appends it to the file at least once atomically (i.e., as one continuous sequence of bytes) at an offset of GFS’s choosing and returns that offset to the client. Avoid data fragments from multiple clients when concurrent writes to the same region using traditional writes.</p>
+<p>The client pushes the data to all replicas of the last chunkof the file Then, it sends its request to the primary. The primary checks to see if appending the record to the current chunkwould cause the chunkto exceed the maximum size (64 MB). If so, it pads the chunk to the maximum size, tells secondaries to do the same, and replies to the client indicating that the operation should be retried on the next chunk. (Record append is restricted to be at most one-fourth of the maximum chunksize to keep worstcase fragmentation at an acceptable level.) If the record fits within the maximum size, which is the common case, the primary appends the data to its replica, tells the secondaries to write the data at the exact offset where it has, and finally replies success to the client.</p>
+<p>The chunkreplica placement policy serves two purposes: maximize data reliability and availability, and maximize networkbandwidth utilization.<br>spread replicas across machines and racks.<br>first guards against diskor machine failures and fully utilizes each machine’s networkbandwidth, the second ensures that some replicas of a chunk will survive and remain available even if an entire rackis damaged or offline .</p>
+<p>When the master creates a chunk, it chooses where to place the initially empty replicas.<br>(1) We want to place new replicas on chunkservers with below-average diskspace utilization. Over time this will equalize diskutilization across chunkservers.<br>(2) We want to limit the number of “recent” creations on each chunkserver. Although creation itself is cheap, it reliably predicts imminent heavy write traffic because chunks are created when demanded by writes, and in our append-once-read-many workload they typically become practically read-only once they have been completely written.<br>(3) As discussed above, we want to spread replicas of a chunkacross racks.<br>master rebalances replicas periodically<br>master re-replicates a chunkas soon as the number of available replicas falls below a user-specified goal with a priority. we give higher priority to a chunkthat has lost two replicas than to a chunkthat has lost only one. prefer to first re-replicate chunks for live files as opposed to chunks that belong to recently deleted files. boost the priority of any chunkthat is blocking client progress.</p>
+<p>When a file is deleted by the application, the master logs the deletion immediately.  the file is renamed to a hidden name that includes the deletion timestamp. During the master’s regular scan of the file system namespace, it removes any such hidden files if they have existed for more than three days. Until then, the file can still be read under the new, special name and can be undeleted by renaming it backto normal. When the hidden file is removed from the namespace, its inmemory metadata is erased.<br>In a HeartBeat message the master replies with the identity of all chunks that are no longer present in the master’s metadata. The chunkserver is free to delete its replicas of such chunks.</p>
+<p>For each chunk, the master maintains a chunk version number to distinguish between up-to-date and stale replicas<br>Whenever the master grants a new lease on a chunk, it increases the chunkversion number and informs the up-todate replicas. The master and these replicas all record the new version number in their persistent state.<br>The master removes stale replicas in its regular garbage collection. Before that, it effectively considers a stale replica not to exist at all</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/18/918-Maximum-Sum-Circular-Subarray/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -405,7 +563,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/">
+    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems%20copy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -424,7 +582,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems/" itemprop="url">ZooKeeper: Wait-free coordination for Internet-scale systems</a></h1>
+                <a class="post-title-link" href="/2023/01/17/ZooKeeper-Wait-free-coordination-for-Internet-scale-systems%20copy/" itemprop="url">ZooKeeper: Wait-free coordination for Internet-scale systems</a></h1>
         
 
         <div class="post-meta">
@@ -1586,152 +1744,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://haozhesun.github.io/2023/01/06/124-Binary-Tree-Maximum-Path-Sum/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Haozhe Sun's site">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2023/01/06/124-Binary-Tree-Maximum-Path-Sum/" itemprop="url">124. Binary Tree Maximum Path Sum</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2023-01-06T16:39:51-05:00">
-                2023-01-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Leetcode/" itemprop="url" rel="index">
-                    <span itemprop="name">Leetcode</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root.</p>
-<p>The path sum of a path is the sum of the node’s values in the path.</p>
-<p>Given the root of a binary tree, return the maximum path sum of any non-empty path.</p>
-<p>For each node, compute the max positive path to this node in it’s left and right subtree<br>Check if left subtree + current node + right subtree is the max path so far, if so, update maxSum<br>return the max of left or right subtree path + current node, this will be the max path sum for the subtree with root be current node.</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"># class TreeNode:</span></span><br><span class="line"><span class="comment">#     def __init__(self, val=0, left=None, right=None):</span></span><br><span class="line"><span class="comment">#         self.val = val</span></span><br><span class="line"><span class="comment">#         self.left = left</span></span><br><span class="line"><span class="comment">#         self.right = right</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">maxPathSum</span>(<span class="params">self, root: <span class="type">Optional</span>[TreeNode]</span>) -&gt; <span class="built_in">int</span>:</span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">subPathSum</span>(<span class="params">root</span>):</span><br><span class="line">            <span class="keyword">nonlocal</span> maxSum</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">            left = <span class="built_in">max</span>(subPathSum(root.left),<span class="number">0</span>)</span><br><span class="line">            right = <span class="built_in">max</span>(subPathSum(root.right),<span class="number">0</span>)</span><br><span class="line">            maxSum=<span class="built_in">max</span>(maxSum, left+right+root.val)</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">max</span>(left,right)+root.val</span><br><span class="line">        maxSum=-<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>)</span><br><span class="line">        subPathSum(root)</span><br><span class="line">        <span class="keyword">return</span> maxSum</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1782,7 +1794,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1804,7 +1816,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
